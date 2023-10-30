@@ -1,3 +1,5 @@
+import pyodbc
+
 DROP  TABLE IF EXISTS Produit 
 CREATE TABLE Produit(
 	CodeProduit int primary key,
@@ -6,4 +8,4 @@ CREATE TABLE Produit(
 	StockActuel INTEGER not null,
 	PrixUnitaire FLOAT not null,
 	CodeCategorie int not null,
-);
+)
