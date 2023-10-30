@@ -1,10 +1,10 @@
-import sqlite3
+import mssql
 from flask import Flask, render_template, request, url_for, flash, redirect
 from werkzeug.exceptions import abort
 
 
 def connect_db():
-    return sqlite3.connect('appbd.py')
+    return mssql.connect('appbd.py')
 
 app=Flask(__name__)#montre le nom (app) de notre application a flask
 
