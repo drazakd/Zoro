@@ -1,0 +1,64 @@
+{% extends "./base.html" %}
+
+{% block centre %}
+<div class="droite">
+            <div class="container1">
+
+                <div class="tab">
+                    <div class="minitab2">
+                        
+                        <form class="formu" action="{{ url_for('produit') }}">
+                            <h3>Ajouter un nouveau produit</h3>
+
+                            <div class="di">
+                                <div>
+                                    <label for="name">NomProduit</label>
+                                </div>
+                                <div>
+                                    <input type="text" id="name" name="nom" placeholder="Nom" size="40">
+                                </div>
+                            </div>
+                            <div class="di">
+                                <div>
+                                    
+                                    <label for="Description">Description: </label>
+                                </div>
+                                <div>
+
+                                    <input type="text" id="Adresse" name="description" placeholder="Description" size="40">
+                                </div>
+                            </div>
+                            <div class="di">
+                                <div>
+                                    
+                                    <label for="StockActuel">StockActuel: </label>
+                                </div>
+                                <div>
+
+                                    <input type="number" id="stockactuel" name="stockactuel" placeholder="StockActuel" size="40">
+                                </div>
+                            </div>
+                            <div class="di">
+                                <div>
+                                    
+                                    <label for="PrixUnitaire">PrixUnitaire: </label>
+                                </div>
+                                <div>
+
+                                    <input type="number" id="prix" name="prixunitaire" placeholder="PrixUnitaire" size="40">
+                                </div>
+                            </div>
+                            <div>
+                                <!-- bouton envoyer -->
+                                <button class="btg" type="submit"><a href="{{ url_for('connexion') }}">Retour</a></button>
+                                <button class="btd" type="submit">Valider</button>
+                            </div>
+        
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+</div>
+{% endblock %}
+    

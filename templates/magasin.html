@@ -1,0 +1,91 @@
+{% extends "./base.html" %}
+
+
+{% block centre %}
+<div class="droite">
+            <div class="container1">
+                <div class="ajouter hover"><a href="{{ url_for('formulaire') }}">ajouter</a></div>
+                <div class="tab">
+                    <div class="minitab">
+                        <h3>Liste des Magasins</h3>
+                        <table border="2">
+                          <tr>
+                            <td class="id un">id</td>
+                            <td class="un">Titre</td>
+                            <td class="un">Texte</td>
+                            <td class="un">Sous-categorie</td>
+                            <td class="un">Date</td>
+                            <td class="un">Action</td>
+                          </tr>
+                          <tr>
+                            <td class="id">1</td>
+                            <td>Magasin 1</td>
+                            <td>Adresse 1</td>
+                            <td>Telephone 1</td>
+                            <td>E-mail</td>
+                            <td>
+                              <button class="modifier"><a href="{{ url_for('modifier') }}">Modifier</a></button>
+                              <button class="Supprimer"><a href="{{ url_for('supprimer') }}">Supprimer</a></button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="id">2</td>
+                            <td>Magasin 2</td>
+                            <td>Adresse 2</td>
+                            <td>Telephone 2</td>
+                            <td>E-mail 2</td>
+                            <td>
+                              <button class="modifier"><a href="{{ url_for('modifier') }}">Modifier</a></button>
+                              <button class="Supprimer"><a href="{{ url_for('supprimer') }}">Supprimer</a></button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="id">3</td>
+                            <td>Magasin 3</td>
+                            <td>Adresse 3</td>
+                            <td>Telephone 3</td>
+                            <td>E-mail 3</td>
+                            <td>
+                              <button class="modifier"><a href="{{ url_for('modifier') }}">Modifier</a></button>
+                              <button class="Supprimer"><a href="{{ url_for('supprimer') }}">Supprimer</a></button>
+                            </td>
+                            <tr>
+                              <td class="id">4</td>
+                              <td>Magasin 4</td>
+                              <td>Adresse 4</td>
+                              <td>Telephone 4</td>
+                              <td>E-mail 4</td>
+                              <td>
+                                <button class="modifier"><a href="{{ url_for('modifier') }}">Modifier</a></button>
+                                <button class="Supprimer"><a href="{{ url_for('supprimer') }}">Supprimer</a></button>
+                              </td>
+                            </tr>
+                          <tr>
+                            <td>5</td>
+                            <td>Magasin 5</td>
+                            <td>Adresse 5</td>
+                            <td>Telephone M</td>
+                            <td>Email 5</td>
+                            <td>
+                              <button class="modifier"><a href="{{ url_for('modifier') }}">Modifier</a></button>
+                              <button class="Supprimer"><a href="{{ url_for('supprimer') }}">Supprimer</a></button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>6</td>
+                            <td>Magasin 6</td>
+                            <td>Adresse 6</td>
+                            <td>Telephone </td>
+                            <td>E-mail 6</td>
+                            <td>
+                              <button class="modifier"><a href="{{ url_for('modifier') }}">Modifier</a></button>
+                              <button class="Supprimer"><a href="{{ url_for('supprimer') }}">Supprimer</a></button>
+                            </td>
+                          </tr>
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+</div>
+{% endblock %}

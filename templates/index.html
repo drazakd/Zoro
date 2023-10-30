@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>projetform</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="../static/initialize.css">
+</head>
+<body>
+    {% include './header.html' %}
+
+    <section class="main">
+        <section class="container">
+            <div class="formulaire">
+                <form action="/connexion">
+                    <div>
+                        <H2>Connectez-vous</H2>
+                    </div>
+                    <div>
+                        <input type="text" id="identifiant" name="identifiant" placeholder="identifiant" >
+                    </div>
+                    <div>
+                        <label for="motdepasse"></label>
+                        <input type="text" id="motdepasse" name="motdepasse" placeholder="Mot de passe">
+                    </div>
+                    <div>
+                        <!-- bouton envoyer -->
+                        <button type="submit">connexion</button>
+                    </div>
+                    <div>
+                        <p><a href="">Si pas de compte inscrivez-vous</a></p>
+                    </div>
+
+                </form>
+            </div>
+        </section>
+    </section>
+
+</body>
+</html>

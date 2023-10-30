@@ -1,0 +1,101 @@
+{% extends "./base.html" %}
+
+{% block centre %}
+<div class="droite">
+            <div class="container1">
+                <div class="ajouter hover"><a href="{{ url_for('formulaire') }}">ajouter</a></div>
+                <div class="tab">
+                    <div class="minitab">
+                        <h3>Liste des Magasins</h3>
+                        <table border="2">
+                            <tr>
+                              <td class="id un">id</td>
+                              <td class="un">Titre</td>
+                              <td class="un">Texte</td>
+                              <td class="un">Sous-categorie</td>
+                              <td class="un">Date</td>
+                              <td class="un">Action</td>
+                            </tr>
+                            <tr>
+                              <td class="id">1</td>
+                              <td>Magasin 1</td>
+                              <td>Adresse 1</td>
+                              <td>Telephone 1</td>
+                              <td>E-mail</td>
+                              <td>
+                                <button>Modifier</button>
+                                <button>Supprimer</button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="id">2</td>
+                              <td>Magasin 2</td>
+                              <td>Adresse 2</td>
+                              <td>Telephone 2</td>
+                              <td>E-mail 2</td>
+                              <td>
+                                <button>Modifier</button>
+                                <button>Supprimer</button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="id">3</td>
+                              <td>Magasin 3</td>
+                              <td>Adresse 3</td>
+                              <td>Telephone 3</td>
+                              <td>E-mail 3</td>
+                              <td>
+                                <button>Modifier</button>
+                                <button>Supprimer</button>
+                              </td>
+                              <tr>
+                                <td class="id">4</td>
+                                <td>Magasin 4</td>
+                                <td>Adresse 4</td>
+                                <td>Telephone 4</td>
+                                <td>E-mail 4</td>
+                                <td>
+                                  <button>Modifier</button>
+                                  <button>Supprimer</button>
+                                </td>
+                              </tr>
+                            <tr>
+                              <td class="nouveau">5</td>
+                              <td class="nouveau">Magasin 5</td>
+                              <td class="nouveau">Adresse 5</td>
+                              <td class="nouveau">Telephone M</td>
+                              <td class="nouveau">Email 5</td>
+                              <td>
+                                <button>Modifier</button>
+                                <button>Supprimer</button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>6</td>
+                              <td>Magasin 6</td>
+                              <td>Adresse 6</td>
+                              <td>Telephone </td>
+                              <td>E-mail 6</td>
+                              <td>
+                                <button>Modifier</button>
+                                <button>Supprimer</button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="nouveau">7</td>
+                              <td class="nouveau">Magasin 7</td>
+                              <td class="nouveau">Adresse 7</td>
+                              <td class="nouveau">Telephone 7</td>
+                              <td class="nouveau">E-mail 7</td>
+                              <td>
+                                <button>Modifier</button>
+                                <button>Supprimer</button>
+                              </td>
+                            </tr>
+                            
+                          </table>
+                    </div>
+                </div>
+            </div>
+</div>
+{% endblock %}
