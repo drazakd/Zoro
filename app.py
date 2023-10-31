@@ -10,7 +10,7 @@ cursor = conn.cursor()
 cursor.execute("select * from Produit")
 
 
-DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
 conn = pyodbc.connect(DSN)
 cursor = conn.cursor()
 cursor.execute("select * from Magasin")
@@ -36,7 +36,7 @@ def accueil():
 
 @app.route("/magasin", methods=['GET', 'POST'])
 def magasin():
-    DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+    DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
     conn = pyodbc.connect(DSN)
     cursor = conn.cursor()
     cursor.execute("select * from Magasin")
@@ -63,7 +63,7 @@ def formulaire():
         adresse = request.form["adresse"]
         telephone = request.form["telephone"]
         email = request.form["email"]
-        DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+        DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
         conn = pyodbc.connect(DSN)
         cursor = conn.cursor()
         cursor.execute('''
@@ -82,10 +82,6 @@ def formulaire():
 
 def formulaire():
     return render_template("formulaire.html")  # lien de la deuxième page"""
-
-@app.route("/add") #sixieme route pour la deuxieme page
-def addmagasin():
-    return render_template("add.html") #lien de la deuxieme page
 
 
 @app.route("/add")  # sixième route pour la deuxième page
@@ -124,9 +120,6 @@ def produit():
     conn.close()
     return render_template("produit.html", data=data)
 
-@app.route("/formulaireproduit")
-def formulaireproduit():
-    return render_template("formulaireproduit.html", methods=['GET', 'POST'])
 
 
 # @app.route("/produit")
@@ -218,30 +211,6 @@ def delete(item_id):
     flash(f'Le produit numéro {item_id} a été supprimé avec succès !', 'info')
     return redirect(url_for('produit'))
 
-if __name__== '__main__': # si notre nom = a main executer app
-    app.run(debug=True) #debug=True pour ne pas avoir a relancer a chaque fois l'application
-
-@app.route("/produit", methods=["GET", "POST"])
-def produit():
-    """
-  Traite les données du formulaire de produit.
-  """
-    # Récupère les données du formulaire.
-    #   Nom = request.form["nom"]
-    #   description = request.form["description"]
-    #   stockactuel = request.form["stockactuel"]
-    #   prixunitaire = request.form["prixunitaire"]
-
-    # Insère les données dans un tableau.
-    #   produit = {
-    #     "nom": nom,
-    #     "description": description,
-    #     "stockactuel": stockactuel,
-    #     "prixunitaire": prixunitaire,
-    #   }
-
-    # Crée la sortie HTML de la page produit.
-    return render_template("produit.html", produit=produit)
 
 
 @app.route('/MagEdit/<int:item_id>', methods=['GET', 'POST'])
