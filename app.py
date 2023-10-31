@@ -1,45 +1,46 @@
 import pyodbc
-import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect
 
-def connect_db():
-    return sqlite3.connect('appbd.py')
-
+DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+conn = pyodbc.connect(DSN)
+cursor = conn.cursor()
+cursor.execute("select * from Magasin")
 
 app = Flask(__name__)  # montre le nom (app) de notre application a flask
+app.config['SECRET_KEY'] = 'clés_flash'
 
 
-# les routes sont les chemin qui vont nous permettre d afficher notre page elle se font grace a @nomdelapp.route("/")
+# les routes sont les chemins qui vont nous permettre d'afficher notre page, elles se font grâce à @nomdelapp.route("/")
 # / pour la route
 
 @app.route("/")  # page principale pour specifier le chemin
-def connexion():  # nom de la fontion
+def connexion():  # nom de la fonction
     return render_template("index.html")
 
 
-@app.route("/connexion")  # deuxieme route pour la deuxieme page
+@app.route("/connexion")  # deuxième route pour la deuxième page
 def accueil():
-    return render_template("base.html")  # lien de la deuxieme page
+    return render_template("base.html")  # lien de la deuxième page
 
 
-@app.route("/magasin")  # troisieme route pour la deuxieme page
+@app.route("/magasin")  # troisième route pour la deuxième page
 def magasin():
-    return render_template("magasin.html")  # lien de la deuxieme page
+    return render_template("magasin.html")  # lien de la deuxième page
 
 
-@app.route("/deconnexion")  # quatrieme route pour la deuxieme page
+@app.route("/deconnexion")  # quatrième route pour la deuxième page
 def deconnexion():
-    return render_template("index.html")  # lien de la deuxieme page
+    return render_template("index.html")  # lien de la deuxième page
 
 
-@app.route("/formulaire")  # cinquieme route pour la deuxieme page
+@app.route("/formulaire")  # cinquième route pour la deuxième page
 def formulaire():
-    return render_template("formulaire.html")  # lien de la deuxieme page
+    return render_template("formulaire.html")  # lien de la deuxième page
 
 
-@app.route("/add")  # sixieme route pour la deuxieme page
+@app.route("/add")  # sixième route pour la deuxième page
 def addmagasin():
-    return render_template("add.html")  # lien de la deuxieme page
+    return render_template("add.html")  # lien de la deuxième page
 
 
 @app.route("/modifier")
@@ -77,7 +78,7 @@ def produit():
   Traite les données du formulaire de produit.
   """
     # Récupère les données du formulaire.
-    #   nom = request.form["nom"]
+    #   Nom = request.form["nom"]
     #   description = request.form["description"]
     #   stockactuel = request.form["stockactuel"]
     #   prixunitaire = request.form["prixunitaire"]
@@ -95,4 +96,4 @@ def produit():
 
 
 if __name__ == '__main__':  # si notre nom = a main executer app
-    app.run(debug=True)  # debug=True pour ne pas avoir a relancer a chaque fois l'application
+    app.run(debug=True)  # debug=True pour ne pas avoir à relancer à chaque fois l'application
