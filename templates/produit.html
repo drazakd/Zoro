@@ -1,9 +1,9 @@
 {% extends "./base.html" %}
 
-{%block reload%}
+{% block reload %}
 <script>
   setTimeout(function(){
-    location.reload();
+    window.location.reload();
   }, 8000);
 </script>
 {% endblock %}
@@ -34,8 +34,8 @@
                             <td> {{ row[3] }} </td>
                             <td> {{ row[4] }} </td>
                             <td>
-                              <button class="modifier"><a href="{{ url_for('modifier') }}">Modifier</a></button>
-                              <button class="Supprimer"><a href="{{ url_for('supprimer') }}">Supprimer</a></button>
+                              <button class="modifier"><a href="{{ url_for('edit', item_id=row[0]) }}">Modifier</a></button>
+                              <button class="Supprimer"><a href="{{ url_for('delete', item_id=row[0]) }}">Supprimer</a></button>
                             </td>
                           </tr>
                           {% endfor %}

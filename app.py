@@ -105,6 +105,64 @@ def formulaireproduit():
     data=''
     return render_template("formulaireproduit.html",data=data)
 
+@app.route('/edit/<int:item_id>', methods=['GET', 'POST'])
+def edit(item_id):
+    item_id = int(item_id)
+
+    # Connexion à la base de données
+    conn = pyodbc.connect(DSN)
+
+    # Création d'un objet curseur
+    cursor = conn.cursor()
+
+    # Récupération des données du produit depuis la base de données
+    cursor.execute('SELECT * FROM produit WHERE CodeProduit = ?', (item_id,))
+    data = cursor.fetchone()
+
+    # Si la méthode de la requête est POST, mise à jour des données du produit dans la base de données
+    if request.method == 'POST':
+        # Récupération des données du formulaire
+        nom = request.form['nom']
+        description = request.form['description']
+        stockactuel = request.form['stockactuel']
+        prixunitaire = request.form['prixunitaire']
+
+        # Mise à jour des données du produit dans la base de données
+        cursor.execute('''
+            UPDATE produit
+            SET Nom = ?, Descriptions = ?, StockActuel = ?, PrixUnitaire = ?
+            WHERE CodeProduit = ?
+        ''', (nom, description, stockactuel, prixunitaire, item_id))
+
+        # Validation des modifications dans la base de données
+        conn.commit()
+
+        # Fermeture de la connexion à la base de données
+        conn.close()
+
+        # Affichage d'un message de succès à l'utilisateur
+        flash(f'Le produit numéro {item_id} a été modifié avec succès !', 'info')
+
+        # Redirection de l'utilisateur vers la page du produit
+        return redirect(url_for('produit'))
+
+    # Retour du modèle de formulaire du produit
+    return render_template('formulaireproduit.html', data=data)
+
+@app.route('/delete/<int:item_id>', methods=['GET', 'POST'])
+def delete(item_id):
+    item_id = int(item_id)
+
+    conn = pyodbc.connect(DSN)
+    cursor = conn.cursor()
+
+    cursor.execute('DELETE FROM produit WHERE CodeProduit = ?', (item_id,))
+
+    conn.commit()
+    conn.close()
+
+    flash(f'Le produit numéro {item_id} a été supprimé avec succès !', 'info')
+    return redirect(url_for('produit'))
 
 if __name__== '__main__': # si notre nom = a main executer app
     app.run(debug=True) #debug=True pour ne pas avoir a relancer a chaque fois l'application
