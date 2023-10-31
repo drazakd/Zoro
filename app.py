@@ -23,9 +23,20 @@ def accueil():
     return render_template("base.html")  # lien de la deuxième page
 
 
-@app.route("/magasin")  # troisième route pour la deuxième page
+@app.route("/magasin", methods=['GET', 'POST'])
 def magasin():
-    return render_template("magasin.html")  # lien de la deuxième page
+    DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+    conn = pyodbc.connect(DSN)
+    cursor = conn.cursor()
+    cursor.execute("select * from Magasin")
+    data = cursor.fetchall()
+    conn.close()
+    return render_template("magasin.html", data=data)
+
+
+"""@app.route("/magasin")  # troisième route pour la deuxième page
+def magasin():
+    return render_template("magasin.html")  # lien de la deuxième page"""
 
 
 @app.route("/deconnexion")  # quatrième route pour la deuxième page
@@ -33,9 +44,31 @@ def deconnexion():
     return render_template("index.html")  # lien de la deuxième page
 
 
-@app.route("/formulaire")  # cinquième route pour la deuxième page
+@app.route("/formulaire", methods=["GET", "POST"])
 def formulaire():
-    return render_template("formulaire.html")  # lien de la deuxième page
+    if request.method == 'POST':
+        nom = request.form["nom"]
+        adresse = request.form["adresse"]
+        telephone = request.form["telephone"]
+        email = request.form["email"]
+        DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+        conn = pyodbc.connect(DSN)
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO Magasin (Nom, Adresse, Telephone, Email)
+            VALUES ( ?, ?, ?, ?)
+         ''', (nom, adresse, telephone, email))
+        conn.commit()
+        conn.close()
+        flash("Votre magasin a été enregistré avec succès !", 'info')
+        return redirect(url_for('magasin'))
+    data = ''
+    return render_template("formulaire.html", data=data)
+
+
+"""@app.route("/formulaire")  # cinquième route pour la deuxième page
+def formulaire():
+    return render_template("formulaire.html")  # lien de la deuxième page"""
 
 
 @app.route("/add")  # sixième route pour la deuxième page

@@ -10,78 +10,26 @@
                         <h3>Liste des Magasins</h3>
                         <table border="2">
                           <tr>
-                            <td class="id un">id</td>
-                            <td class="un">Titre</td>
-                            <td class="un">Texte</td>
-                            <td class="un">Sous-categorie</td>
-                            <td class="un">Date</td>
-                            <td class="un">Action</td>
+                              <td class="id un">Id</td>
+                              <td class="un">Nom</td>
+                              <td class="un">Adresse</td>
+                              <td class="un">Telephone</td>
+                              <td class="un">Email</td>
+                              <td class="un">Action</td>
                           </tr>
+                          {% for row in data %}
                           <tr>
-                            <td class="id">1</td>
-                            <td>Magasin 1</td>
-                            <td>Adresse 1</td>
-                            <td>Telephone 1</td>
-                            <td>E-mail</td>
+                            <td> {{ row[0] }} </td>
+                            <td> {{ row[1] }} </td>
+                            <td> {{ row[2] }} </td>
+                            <td> {{ row[3] }} </td>
+                            <td> {{ row[4] }} </td>
                             <td>
                               <button class="modifier"><a href="{{ url_for('modifier') }}">Modifier</a></button>
                               <button class="Supprimer"><a href="{{ url_for('supprimer') }}">Supprimer</a></button>
                             </td>
                           </tr>
-                          <tr>
-                            <td class="id">2</td>
-                            <td>Magasin 2</td>
-                            <td>Adresse 2</td>
-                            <td>Telephone 2</td>
-                            <td>E-mail 2</td>
-                            <td>
-                              <button class="modifier"><a href="{{ url_for('modifier') }}">Modifier</a></button>
-                              <button class="Supprimer"><a href="{{ url_for('supprimer') }}">Supprimer</a></button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td class="id">3</td>
-                            <td>Magasin 3</td>
-                            <td>Adresse 3</td>
-                            <td>Telephone 3</td>
-                            <td>E-mail 3</td>
-                            <td>
-                              <button class="modifier"><a href="{{ url_for('modifier') }}">Modifier</a></button>
-                              <button class="Supprimer"><a href="{{ url_for('supprimer') }}">Supprimer</a></button>
-                            </td>
-                            <tr>
-                              <td class="id">4</td>
-                              <td>Magasin 4</td>
-                              <td>Adresse 4</td>
-                              <td>Telephone 4</td>
-                              <td>E-mail 4</td>
-                              <td>
-                                <button class="modifier"><a href="{{ url_for('modifier') }}">Modifier</a></button>
-                                <button class="Supprimer"><a href="{{ url_for('supprimer') }}">Supprimer</a></button>
-                              </td>
-                            </tr>
-                          <tr>
-                            <td>5</td>
-                            <td>Magasin 5</td>
-                            <td>Adresse 5</td>
-                            <td>Telephone M</td>
-                            <td>Email 5</td>
-                            <td>
-                              <button class="modifier"><a href="{{ url_for('modifier') }}">Modifier</a></button>
-                              <button class="Supprimer"><a href="{{ url_for('supprimer') }}">Supprimer</a></button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>6</td>
-                            <td>Magasin 6</td>
-                            <td>Adresse 6</td>
-                            <td>Telephone </td>
-                            <td>E-mail 6</td>
-                            <td>
-                              <button class="modifier"><a href="{{ url_for('modifier') }}">Modifier</a></button>
-                              <button class="Supprimer"><a href="{{ url_for('supprimer') }}">Supprimer</a></button>
-                            </td>
-                          </tr>
+                          {% endfor %}
                             
                         </table>
                     </div>
