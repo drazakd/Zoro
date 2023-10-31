@@ -25,8 +25,8 @@
                             <td> {{ row[3] }} </td>
                             <td> {{ row[4] }} </td>
                             <td>
-                              <button class="modifier"><a href="{{ url_for('modifier') }}">Modifier</a></button>
-                              <button class="Supprimer"><a href="{{ url_for('supprimer') }}">Supprimer</a></button>
+                              <button class="modifier"><a href="{{ url_for('MagEdit', item_id=row[0]) }}">Modifier</a></button>
+                              <button class="Supprimer"><a href="{{ url_for('MagDelete', item_id=row[0]) }}">Supprimer</a></button>
                             </td>
                           </tr>
                           {% endfor %}

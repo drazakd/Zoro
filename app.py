@@ -128,5 +128,41 @@ def produit():
     return render_template("produit.html", produit=produit)
 
 
+@app.route('/MagEdit/<int:item_id>', methods=['GET', 'POST'])
+def MagEdit(item_id):
+    item_id = int(item_id)
+    conn = pyodbc.connect(DSN)
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM Magasin WHERE IdMagasin = ?', (item_id,))
+    data = cursor.fetchone()
+    if request.method == 'POST':
+        nom = request.form["nom"]
+        adresse = request.form["adresse"]
+        telephone = request.form["telephone"]
+        email = request.form["email"]
+        cursor.execute('''
+            UPDATE Magasin
+            SET Nom = ?, Adresse = ?, Telephone = ?, Email = ?
+            WHERE IdMagasin = ?
+        ''', (nom, adresse, telephone, email, item_id))
+        conn.commit()
+        conn.close()
+        flash(f'Le magasin numéro {item_id} a été modifié avec succès !', 'info')
+        return redirect(url_for('magasin'))
+    return render_template('formulaire.html', data=data)
+
+
+@app.route('/MagDelete/<int:item_id>', methods=['GET', 'POST'])
+def MagDelete(item_id):
+    item_id = int(item_id)
+    conn = pyodbc.connect(DSN)
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM Magasin WHERE IdMagasin = ?', (item_id,))
+    conn.commit()
+    conn.close()
+    flash(f'Le magasin numéro {item_id} a été supprimé avec succès !', 'info')
+    return redirect(url_for('magasin'))
+
+
 if __name__ == '__main__':  # si notre nom = a main executer app
     app.run(debug=True)  # debug=True pour ne pas avoir à relancer à chaque fois l'application
