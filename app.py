@@ -112,22 +112,31 @@ def magsup():
 
 @app.route("/produit", methods=['GET','POST'])
 def produit():
+    # -------------------------------------------------------------
+    # 1. Déclaration des variables et des objets
+    # -------------------------------------------------------------
+    # Variables
     DSN = 'Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;'
+
+    # Objets
     conn = pyodbc.connect(DSN)
     cursor = conn.cursor()
+
+    # -------------------------------------------------------------
+    # 2. Exécution des requêtes SQL et récupération des données
+    # -------------------------------------------------------------
     cursor.execute("select * from Produit")
     data = cursor.fetchall()
+
+    # -------------------------------------------------------------
+    # 3. Fermeture de la connexion et affichage des données
+    # -------------------------------------------------------------
     conn.close()
+
+    # Affichage des données dans le template HTML
     return render_template("produit.html", data=data)
 
 
-
-# @app.route("/produit")
-# def produit():
-#     return render_template("produit.html")
-# class Product(db.Model):
-#     __tablename__ = 'Produit'
-#     CodeProduit = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
 
 @app.route("/formulaireproduit", methods=["GET","POST"])
@@ -148,6 +157,7 @@ def formulaireproduit():
         conn.commit()
         conn.close()
         flash("Votre produit a été enregistré avec succès !", 'info')
+    
         return redirect(url_for('produit'))
     data=''
     return render_template("formulaireproduit.html",data=data)
