@@ -18,11 +18,6 @@ cursor.execute("select * from Magasin")
 app=Flask(__name__)#montre le nom (app) de notre application a flask
 app.config['SECRET_KEY']='clés_flash'
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product'
-# db = SQLAlchemy(app)
-
-# les routes sont les chemins qui vont nous permettre d'afficher notre page, elles se font grâce à @nomdelapp.route("/")
-# / pour la route
 
 @app.route("/")  # page principale pour specifier le chemin
 def connexion():  # nom de la fonction
@@ -45,9 +40,6 @@ def magasin():
     return render_template("magasin.html", data=data)
 
 
-"""@app.route("/magasin")  # troisième route pour la deuxième page
-def magasin():
-    return render_template("magasin.html")  # lien de la deuxième page"""
 
 
 @app.route("/deconnexion")  # quatrième route pour la deuxième page
@@ -78,10 +70,6 @@ def formulaire():
     return render_template("formulaire.html", data=data)
 
 
-"""@app.route("/formulaire")  # cinquième route pour la deuxième page
-
-def formulaire():
-    return render_template("formulaire.html")  # lien de la deuxième page"""
 
 
 @app.route("/add")  # sixième route pour la deuxième page
@@ -99,10 +87,35 @@ def magasinmodif():
     return render_template("magasinmodifie.html")
 
 
-@app.route("/supprimer")
-def supprimer():
-    return render_template("supprimera.html")
+@app.route("/supprimer/<int:item_id>", methods=['GET', 'POST'])
+def supprimer(item_id):
+    item_id = int(item_id)
 
+    conn = pyodbc.connect(DSN)
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM produit WHERE CodeProduit = ?', (item_id,))
+    data = cursor.fetchone()
+    conn.commit()
+    conn.close()
+
+    flash(f'Le produit numéro {item_id} a été supprimé avec succès !', 'info')
+    return render_template("supprimera.html", data=data)
+
+@app.route("/suppress/<int:item_id>", methods=['GET', 'POST'])
+def suppress(item_id):
+    item_id = int(item_id)
+
+    conn = pyodbc.connect(DSN)
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM Magasin WHERE IdMagasin = ?', (item_id,))
+    data = cursor.fetchone()
+    conn.commit()
+    conn.close()
+
+    flash(f'Le magasin numéro {item_id} a été supprimé avec succès !', 'info')
+    return render_template("suppress.html", data=data)
 
 @app.route("/magsup")
 def magsup():
@@ -220,6 +233,7 @@ def delete(item_id):
 
     flash(f'Le produit numéro {item_id} a été supprimé avec succès !', 'info')
     return redirect(url_for('produit'))
+
 
 
 
