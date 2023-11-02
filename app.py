@@ -99,7 +99,7 @@ def supprimer(item_id):
     conn.commit()
     conn.close()
 
-    flash(f'Le produit numéro {item_id} a été supprimé avec succès !', 'info')
+    # flash(f'Le produit numéro {item_id} a été supprimé avec succès !', 'info')
     return render_template("supprimera.html", data=data)
 
 @app.route("/suppress/<int:item_id>", methods=['GET', 'POST'])
@@ -114,7 +114,7 @@ def suppress(item_id):
     conn.commit()
     conn.close()
 
-    flash(f'Le magasin numéro {item_id} a été supprimé avec succès !', 'info')
+    # flash(f'Le magasin numéro {item_id} a été supprimé avec succès !', 'info')
     return render_template("suppress.html", data=data)
 
 @app.route("/magsup")
