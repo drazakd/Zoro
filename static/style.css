@@ -285,7 +285,16 @@ a{
     margin-bottom: 10px;
 }
 
-
+.alert{
+    background-color: rgb(131, 249, 131);
+    padding: 5px;
+    color: white;
+    border-radius: 5px ;
+    margin-top: 10px;
+    margin-left: 20%;
+    width: 300px;
+    text-align: center;
+}
 
 /* .touchconfirm{
     height: 20%;
