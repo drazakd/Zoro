@@ -102,6 +102,20 @@ def supprimer(item_id):
     flash(f'Le produit numéro {item_id} a été supprimé avec succès !', 'info')
     return render_template("supprimera.html", data=data)
 
+@app.route("/suppress/<int:item_id>", methods=['GET', 'POST'])
+def suppress(item_id):
+    item_id = int(item_id)
+
+    conn = pyodbc.connect(DSN)
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM Magasin WHERE IdMagasin = ?', (item_id,))
+    data = cursor.fetchone()
+    conn.commit()
+    conn.close()
+
+    flash(f'Le magasin numéro {item_id} a été supprimé avec succès !', 'info')
+    return render_template("suppress.html", data=data)
 
 @app.route("/magsup")
 def magsup():
