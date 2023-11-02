@@ -1,14 +1,25 @@
-import pyodbc
 from flask import Flask, render_template, request, url_for, flash, redirect
+import pyodbc
+# from flask_sqlalchemy import SQLAlchemy
 
-DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+# Connexion à la base de données SQL Server
+
+DSN = 'Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;'
+conn = pyodbc.connect(DSN)
+cursor = conn.cursor()
+cursor.execute("select * from Produit")
+
+
+DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
 conn = pyodbc.connect(DSN)
 cursor = conn.cursor()
 cursor.execute("select * from Magasin")
 
-app = Flask(__name__)  # montre le nom (app) de notre application a flask
-app.config['SECRET_KEY'] = 'clés_flash'
+app=Flask(__name__)#montre le nom (app) de notre application a flask
+app.config['SECRET_KEY']='clés_flash'
 
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product'
+# db = SQLAlchemy(app)
 
 # les routes sont les chemins qui vont nous permettre d'afficher notre page, elles se font grâce à @nomdelapp.route("/")
 # / pour la route
@@ -25,7 +36,7 @@ def accueil():
 
 @app.route("/magasin", methods=['GET', 'POST'])
 def magasin():
-    DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+    DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
     conn = pyodbc.connect(DSN)
     cursor = conn.cursor()
     cursor.execute("select * from Magasin")
@@ -44,6 +55,7 @@ def deconnexion():
     return render_template("index.html")  # lien de la deuxième page
 
 
+
 @app.route("/formulaire", methods=["GET", "POST"])
 def formulaire():
     if request.method == 'POST':
@@ -51,7 +63,7 @@ def formulaire():
         adresse = request.form["adresse"]
         telephone = request.form["telephone"]
         email = request.form["email"]
-        DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+        DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
         conn = pyodbc.connect(DSN)
         cursor = conn.cursor()
         cursor.execute('''
@@ -67,6 +79,7 @@ def formulaire():
 
 
 """@app.route("/formulaire")  # cinquième route pour la deuxième page
+
 def formulaire():
     return render_template("formulaire.html")  # lien de la deuxième page"""
 
@@ -96,36 +109,118 @@ def magsup():
     return render_template("magasinsupprime.html")
 
 
-@app.route("/formulaireproduit")
-def formulaireproduit():
-    return render_template("formulaireproduit.html", methods=['GET', 'POST'])
 
-
-# @app.route("/produit")
-# def produit():
-#     return render_template("produit.html")
-
-@app.route("/produit", methods=["GET", "POST"])
+@app.route("/produit", methods=['GET','POST'])
 def produit():
-    """
-  Traite les données du formulaire de produit.
-  """
-    # Récupère les données du formulaire.
-    #   Nom = request.form["nom"]
-    #   description = request.form["description"]
-    #   stockactuel = request.form["stockactuel"]
-    #   prixunitaire = request.form["prixunitaire"]
+    # -------------------------------------------------------------
+    # 1. Déclaration des variables et des objets
+    # -------------------------------------------------------------
+    # Variables
+    DSN = 'Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;'
 
-    # Insère les données dans un tableau.
-    #   produit = {
-    #     "nom": nom,
-    #     "description": description,
-    #     "stockactuel": stockactuel,
-    #     "prixunitaire": prixunitaire,
-    #   }
+    # Objets
+    conn = pyodbc.connect(DSN)
+    cursor = conn.cursor()
 
-    # Crée la sortie HTML de la page produit.
-    return render_template("produit.html", produit=produit)
+    # -------------------------------------------------------------
+    # 2. Exécution des requêtes SQL et récupération des données
+    # -------------------------------------------------------------
+    cursor.execute("select * from Produit")
+    data = cursor.fetchall()
+
+    # -------------------------------------------------------------
+    # 3. Fermeture de la connexion et affichage des données
+    # -------------------------------------------------------------
+    conn.close()
+
+    # Affichage des données dans le template HTML
+    return render_template("produit.html", data=data)
+
+
+
+
+@app.route("/formulaireproduit", methods=["GET","POST"])
+def formulaireproduit():
+    if request.method == 'POST':
+
+        nom = request.form["nom"]
+        description = request.form["description"]
+        stockactuel = request.form["stockactuel"]
+        prixunitaire = request.form["prixunitaire"]
+        DSN = 'Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;'
+        conn = pyodbc.connect(DSN)
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO Produit (Nom, Descriptions, StockActuel, PrixUnitaire)
+            VALUES ( ?, ?, ?, ?)
+         ''', (nom, description, stockactuel, prixunitaire))
+        conn.commit()
+        conn.close()
+        flash("Votre produit a été enregistré avec succès !", 'info')
+    
+        return redirect(url_for('produit'))
+    data=''
+    return render_template("formulaireproduit.html",data=data)
+
+@app.route('/edit/<int:item_id>', methods=['GET', 'POST'])
+def edit(item_id):
+    item_id = int(item_id)
+
+    # Connexion à la base de données
+    conn = pyodbc.connect(DSN)
+
+    # Création d'un objet curseur
+    cursor = conn.cursor()
+
+    # Récupération des données du produit depuis la base de données
+    cursor.execute('SELECT * FROM produit WHERE CodeProduit = ?', (item_id,))
+    data = cursor.fetchone()
+
+    # Si la méthode de la requête est POST, mise à jour des données du produit dans la base de données
+    if request.method == 'POST':
+        # Récupération des données du formulaire
+        nom = request.form['nom']
+        description = request.form['description']
+        stockactuel = request.form['stockactuel']
+        prixunitaire = request.form['prixunitaire']
+
+        # Mise à jour des données du produit dans la base de données
+        cursor.execute('''
+            UPDATE produit
+            SET Nom = ?, Descriptions = ?, StockActuel = ?, PrixUnitaire = ?
+            WHERE CodeProduit = ?
+        ''', (nom, description, stockactuel, prixunitaire, item_id))
+
+        # Validation des modifications dans la base de données
+        conn.commit()
+
+        # Fermeture de la connexion à la base de données
+        conn.close()
+
+        # Affichage d'un message de succès à l'utilisateur
+        flash(f'Le produit numéro {item_id} a été modifié avec succès !', 'info')
+
+        # Redirection de l'utilisateur vers la page du produit
+        return redirect(url_for('produit'))
+
+    # Retour du modèle de formulaire du produit
+    return render_template('formulaireproduit.html', data=data)
+
+@app.route('/delete/<int:item_id>', methods=['GET', 'POST'])
+def delete(item_id):
+    item_id = int(item_id)
+
+    conn = pyodbc.connect(DSN)
+    cursor = conn.cursor()
+
+    cursor.execute('DELETE FROM produit WHERE CodeProduit = ?', (item_id,))
+
+    conn.commit()
+    conn.close()
+
+    flash(f'Le produit numéro {item_id} a été supprimé avec succès !', 'info')
+    return redirect(url_for('produit'))
+
 
 
 @app.route('/MagEdit/<int:item_id>', methods=['GET', 'POST'])
@@ -166,3 +261,4 @@ def MagDelete(item_id):
 
 if __name__ == '__main__':  # si notre nom = a main executer app
     app.run(debug=True)  # debug=True pour ne pas avoir à relancer à chaque fois l'application
+
