@@ -17,7 +17,7 @@
                                 <div>
                                     <select name="nomproduit" id="NomProduit">
                                         {% for prod in prods %}
-                                            <option value="{{prod.0}}" selected>{{prod.1}}</option>
+                                            <option value="{{prod.0}}" {% if prod == prodsel %} selected {% endif %}>{{prod.1}}</option>
                                         {% endfor %}
                                     </select>
                                     <!-- <input type="text" id="NomProduit" name="nomproduit" placeholder="Nom" size="40" value= "{{data[1]}}" required> -->
@@ -30,7 +30,7 @@
                                 <div>
                                     <select name="nommagasin" id="NomMagasin">
                                         {% for mag in mags %}
-                                            <option value="{{mag.0}}" selected>{{mag.1}}</option>
+                                            <option value="{{mag.0}}" {% if mag == magsel %} selected {% endif %}>{{mag.1}}</option>
                                         {% endfor %}
                                     </select>
                                     <!-- <input type="text" id="NomMagasin" name="nommagasin" placeholder="Adresse" size="40" value= "{{data[2]}}" required> -->

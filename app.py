@@ -278,7 +278,7 @@ def formulairevente():
         SELECT Produit.PrixUnitaire FROM Produit WHERE Produit.CodeProduit = ?
         ''', nomproduit)
         prixunitaire = cursor.fetchone()
-        prixtotal = int(quantite)*int(prixunitaire[0])
+        prixtotal = int(quantite) * int(prixunitaire[0])
         cursor.execute('''
             INSERT INTO Vente (Quantite, PrixTotal, CodeProduit, IdMagasin)
             VALUES ( ?, ?, ?, ?)
@@ -300,6 +300,14 @@ def ventedit(item_id):
     prods = cursor.fetchall()
     cursor.execute('SELECT * FROM Magasin')
     mags = cursor.fetchall()
+    cursor.execute("""
+        SELECT Magasin.Nom, Produit.Nom
+        FROM Vente
+        INNER JOIN Magasin ON Vente.IdMagasin = Magasin.IdMagasin
+        INNER JOIN Produit ON Vente.CodeProduit = Produit.CodeProduit
+        WHERE IdVente = ?
+    """, item_id)
+    magsel, prodsel = cursor.fetchone()
     cursor.execute('''
     SELECT Vente.Quantite
     FROM Vente
@@ -324,7 +332,19 @@ def ventedit(item_id):
         conn.close()
         flash(f'Le magasin numéro {item_id} a été modifié avec succès !', 'info')
         return redirect(url_for('vente'))
-    return render_template('formulaireventedit.html', data=data, prods=prods, mags=mags)
+    return render_template('formulaireventedit.html', magsel=magsel, prodsel=prodsel, data=data, prods=prods, mags=mags)
+
+
+@app.route('/VenteDelete/<int:item_id>', methods=['GET', 'POST'])
+def VenteDelete(item_id):
+    item_id = int(item_id)
+    conn = pyodbc.connect(DSN)
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM Vente WHERE IdVente = ?', item_id)
+    conn.commit()
+    conn.close()
+    flash(f'La vente numéro {item_id} a été supprimé avec succès !', 'info')
+    return redirect(url_for('vente'))
 
 
 if __name__ == '__main__':  # si notre nom = a main executer app
