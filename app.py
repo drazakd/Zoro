@@ -17,9 +17,6 @@ app = Flask(__name__)  # montre le nom (app) de notre application a flask
 app.config['SECRET_KEY'] = 'clés_flash'
 
 
-# les routes sont les chemins qui vont nous permettre d'afficher notre page, elles se font grâce à @nomdelapp.route("/")
-# / pour la route
-
 @app.route("/")  # page principale pour specifier le chemin
 def connexion():  # nom de la fonction
     return render_template("index.html")
@@ -41,9 +38,6 @@ def magasin():
     return render_template("magasin.html", data=data)
 
 
-"""@app.route("/magasin")  # troisième route pour la deuxième page
-def magasin():
-    return render_template("magasin.html")  # lien de la deuxième page"""
 
 
 @app.route("/deconnexion")  # quatrième route pour la deuxième page
@@ -73,6 +67,7 @@ def formulaire():
     return render_template("formulaire.html", data=data)
 
 
+
 @app.route("/add")  # sixième route pour la deuxième page
 def addmagasin():
     return render_template("add.html")  # lien de la deuxième page
@@ -88,10 +83,35 @@ def magasinmodif():
     return render_template("magasinmodifie.html")
 
 
-@app.route("/supprimer")
-def supprimer():
-    return render_template("supprimera.html")
+@app.route("/supprimer/<int:item_id>", methods=['GET', 'POST'])
+def supprimer(item_id):
+    item_id = int(item_id)
 
+    conn = pyodbc.connect(DSN)
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM produit WHERE CodeProduit = ?', (item_id,))
+    data = cursor.fetchone()
+    conn.commit()
+    conn.close()
+
+    # flash(f'Le produit numéro {item_id} a été supprimé avec succès !', 'info')
+    return render_template("supprimera.html", data=data)
+
+@app.route("/suppress/<int:item_id>", methods=['GET', 'POST'])
+def suppress(item_id):
+    item_id = int(item_id)
+
+    conn = pyodbc.connect(DSN)
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM Magasin WHERE IdMagasin = ?', (item_id,))
+    data = cursor.fetchone()
+    conn.commit()
+    conn.close()
+
+    # flash(f'Le magasin numéro {item_id} a été supprimé avec succès !', 'info')
+    return render_template("suppress.html", data=data)
 
 @app.route("/magsup")
 def magsup():
@@ -125,24 +145,37 @@ def produit():
     return render_template("produit.html", data=data)
 
 
-@app.route("/formulaireproduit", methods=["GET", "POST"])
+
+"""Créer un nouveau produit."""
+@app.route("/formulaireproduit", methods=["GET","POST"])
 def formulaireproduit():
+    
+    # Si la requête est une requête POST, insérer le nouveau produit dans la base de données
     if request.method == 'POST':
+        # Récupérer les données du formulaire
         nom = request.form["nom"]
         description = request.form["description"]
         stockactuel = request.form["stockactuel"]
         prixunitaire = request.form["prixunitaire"]
         DSN = 'Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;'
+
+        # Connexion à la base de données
+        DSN = 'Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;'
         conn = pyodbc.connect(DSN)
         cursor = conn.cursor()
+
+        # Insertion du nouveau produit
         cursor.execute('''
             INSERT INTO Produit (Nom, Descriptions, StockActuel, PrixUnitaire)
             VALUES ( ?, ?, ?, ?)
          ''', (nom, description, stockactuel, prixunitaire))
+        
+        # Validation des modifications et fermeture de la connexion à la base de données
         conn.commit()
         conn.close()
-        flash("Votre produit a été enregistré avec succès !", 'info')
 
+        # Message de confirmation 
+        flash("Votre produit a été enregistré avec succès !", 'info')
         return redirect(url_for('produit'))
     data = ''
     return render_template("formulaireproduit.html", data=data)
@@ -197,16 +230,23 @@ def edit(item_id):
 def delete(item_id):
     item_id = int(item_id)
 
+    # Connexion à la base de données
     conn = pyodbc.connect(DSN)
+
+    # Création d'un objet curseur
     cursor = conn.cursor()
 
+    # Récupération des données du produit depuis la base de données
     cursor.execute('DELETE FROM produit WHERE CodeProduit = ?', (item_id,))
 
+    # Validation des modifications dans la base de données
     conn.commit()
+    # Fermeture de la connexion à la base de données
     conn.close()
 
     flash(f'Le produit numéro {item_id} a été supprimé avec succès !', 'info')
     return redirect(url_for('produit'))
+
 
 
 @app.route('/MagEdit/<int:item_id>', methods=['GET', 'POST'])
