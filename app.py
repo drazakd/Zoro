@@ -151,26 +151,38 @@ def produit():
 
 
 
-
+"""Créer un nouveau produit."""
 @app.route("/formulaireproduit", methods=["GET","POST"])
 def formulaireproduit():
+    
+    # Si la requête est une requête POST, insérer le nouveau produit dans la base de données
     if request.method == 'POST':
 
+        # Récupérer les données du formulaire
         nom = request.form["nom"]
         description = request.form["description"]
         stockactuel = request.form["stockactuel"]
         prixunitaire = request.form["prixunitaire"]
+
+        # Connexion à la base de données
         DSN = 'Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;'
         conn = pyodbc.connect(DSN)
         cursor = conn.cursor()
+
+        # Insertion du nouveau produit
         cursor.execute('''
             INSERT INTO Produit (Nom, Descriptions, StockActuel, PrixUnitaire)
             VALUES ( ?, ?, ?, ?)
          ''', (nom, description, stockactuel, prixunitaire))
+        
+        # Validation des modifications et fermeture de la connexion à la base de données
         conn.commit()
         conn.close()
+
+        # Message de confirmation 
         flash("Votre produit a été enregistré avec succès !", 'info')
     
+        # redirection vers la page des produits
         return redirect(url_for('produit'))
     data=''
     return render_template("formulaireproduit.html",data=data)
@@ -223,12 +235,18 @@ def edit(item_id):
 def delete(item_id):
     item_id = int(item_id)
 
+    # Connexion à la base de données
     conn = pyodbc.connect(DSN)
+
+    # Création d'un objet curseur
     cursor = conn.cursor()
 
+    # Récupération des données du produit depuis la base de données
     cursor.execute('DELETE FROM produit WHERE CodeProduit = ?', (item_id,))
 
+    # Validation des modifications dans la base de données
     conn.commit()
+    # Fermeture de la connexion à la base de données
     conn.close()
 
     flash(f'Le produit numéro {item_id} a été supprimé avec succès !', 'info')
