@@ -15,3 +15,17 @@ Description VARCHAR(200),
 StockActuel INT,
 PrixUnitaire FLOAT,
 );
+
+CREATE TABLE Vente(
+IdVente INT PRIMARY KEY IDENTITY(1,1),
+Quantite INT NOT NULL,
+PrixTotal FLOAT NOT NULL,
+CodeProduit INT,
+FOREIGN KEY (CodeProduit) REFERENCES Produit(CodeProduit),
+IdMagasin INT,
+FOREIGN KEY (IdMagasin) REFERENCES Magasin(IdMagasin)
+<<<<<<< Updated upstream
+);
+=======
+);
+>>>>>>> Stashed changes
