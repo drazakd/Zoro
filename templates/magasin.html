@@ -1,5 +1,12 @@
 {% extends "./base.html" %}
 
+{% block reload %}
+<script>
+  setTimeout(function(){
+    window.location.reload();
+  }, 8000);
+</script>
+{% endblock %}
 
 {% block centre %}
 <div class="droite">
