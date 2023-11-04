@@ -24,4 +24,8 @@ CodeProduit INT,
 FOREIGN KEY (CodeProduit) REFERENCES Produit(CodeProduit),
 IdMagasin INT,
 FOREIGN KEY (IdMagasin) REFERENCES Magasin(IdMagasin)
+<<<<<<< Updated upstream
 );
+=======
+);
+>>>>>>> Stashed changes
