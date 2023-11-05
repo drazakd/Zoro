@@ -404,7 +404,7 @@ def stock():
             CodeProduit,
             SUM(Quantite) AS QuantiteVente
         FROM Vente
-        WHERE IdMagasin = ?
+        
         GROUP BY IdMagasin, CodeProduit;
         """, (id_magasin,))
         vente = cursor.fetchall()
