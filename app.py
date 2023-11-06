@@ -3,12 +3,12 @@ import pyodbc
 
 # Connexion à la base de données SQL Server
 
-DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
 conn = pyodbc.connect(DSN)
 cursor = conn.cursor()
 cursor.execute("select * from Produit")
 
-DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
 conn = pyodbc.connect(DSN)
 cursor = conn.cursor()
 cursor.execute("select * from Magasin")
@@ -29,7 +29,7 @@ def accueil():
 
 @app.route("/magasin", methods=['GET', 'POST'])
 def magasin():
-    DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+    DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
     conn = pyodbc.connect(DSN)
     cursor = conn.cursor()
     cursor.execute("select * from Magasin")
@@ -50,7 +50,7 @@ def formulaire():
         adresse = request.form["adresse"]
         telephone = request.form["telephone"]
         email = request.form["email"]
-        DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+        DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
         conn = pyodbc.connect(DSN)
         cursor = conn.cursor()
         cursor.execute('''
@@ -103,7 +103,7 @@ def produit():
     # 1. Déclaration des variables et des objets
     # -------------------------------------------------------------
     # Variables
-    DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+    DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
 
     # Objets
     conn = pyodbc.connect(DSN)
@@ -136,7 +136,7 @@ def formulaireproduit():
         description = request.form["description"]
         stockactuel = request.form["stockactuel"]
         prixunitaire = request.form["prixunitaire"]
-        DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+        DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
 
         # Connexion à la base de données
         DSN = 'Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;'
@@ -253,7 +253,7 @@ def MagEdit(item_id):
 
 @app.route("/vente")
 def vente():
-    DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+    DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
     conn = pyodbc.connect(DSN)
     cursor = conn.cursor()
     cursor.execute("""
@@ -268,7 +268,7 @@ def vente():
 
 @app.route("/formulairevente", methods=["GET", "POST"])
 def formulairevente():
-    DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+    DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
     conn = pyodbc.connect(DSN)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM Produit")
