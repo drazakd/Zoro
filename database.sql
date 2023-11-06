@@ -12,7 +12,6 @@ CREATE TABLE Produit (
 CodeProduit INT IDENTITY(1,1) PRIMARY KEY,
 Nom VARCHAR(50),
 Description VARCHAR(200),
-StockActuel INT,
 PrixUnitaire FLOAT,
 );
 
