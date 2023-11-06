@@ -374,56 +374,6 @@ def VenteDelete(item_id):
     flash(f'La vente numéro {item_id} a été supprimé avec succès !', 'info')
     return redirect(url_for('vente'))
 
-@app.route("/stock")
-def stock():
-    # Se connecter à la base de données SQL Server
-    conn = pyodbc.connect(DSN)
-
-    # Créer un curseur
-    cursor = conn.cursor()
-
-    # Exécuter la requête SQL pour obtenir les données de la table Stock
-    cursor.execute("""SELECT
-        IdMagasin,
-        CodeProduit,
-        SUM(Quantite) AS QuantiteStock
-    FROM Stock
-    GROUP BY IdMagasin, CodeProduit;
-    """)
-
-    # Obtenir les données de la table Stock
-    stock = cursor.fetchall()
-
-    # Fermer le curseur et la connexion
-    cursor.close()
-    conn.close()
-
-    # Obtenir les données de la table Vente
-    id_magasin = request.args.get("id_magasin")
-    if id_magasin is not None:
-        cursor.execute("""SELECT
-            IdMagasin,
-            CodeProduit,
-            SUM(Quantite) AS QuantiteVente
-        FROM Vente
-        
-        GROUP BY IdMagasin, CodeProduit;
-        """, (id_magasin,))
-        vente = cursor.fetchall()
-    else:
-        vente = []
-
-    # Fusionner les données des deux tables
-    stock_vente = []
-    for ligne_stock in stock:
-        for ligne_vente in vente:
-            if ligne_stock[0] == ligne_vente[0] and ligne_stock[1] == ligne_vente[1]:
-                ligne_stock_vente = ligne_stock + (ligne_vente[2],)
-                stock_vente.append(ligne_stock_vente)
-
-    # Retourner les données
-    return render_template("stock.html", stock_vente=stock_vente)
-
 
 if __name__ == '__main__':  # si notre nom = a main executer app
     app.run(debug=True)  # debug=True pour ne pas avoir à relancer à chaque fois l'application
