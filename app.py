@@ -3,12 +3,12 @@ import pyodbc
 
 # Connexion à la base de données SQL Server
 
-DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
+DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
 conn = pyodbc.connect(DSN)
 cursor = conn.cursor()
 cursor.execute("select * from Produit")
 
-DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
+DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
 conn = pyodbc.connect(DSN)
 cursor = conn.cursor()
 cursor.execute("select * from Magasin")
@@ -29,15 +29,13 @@ def accueil():
 
 @app.route("/magasin", methods=['GET', 'POST'])
 def magasin():
-    DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
+    DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
     conn = pyodbc.connect(DSN)
     cursor = conn.cursor()
     cursor.execute("select * from Magasin")
     data = cursor.fetchall()
     conn.close()
     return render_template("magasin.html", data=data)
-
-
 
 
 @app.route("/deconnexion")  # quatrième route pour la deuxième page
@@ -52,7 +50,7 @@ def formulaire():
         adresse = request.form["adresse"]
         telephone = request.form["telephone"]
         email = request.form["email"]
-        DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
+        DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
         conn = pyodbc.connect(DSN)
         cursor = conn.cursor()
         cursor.execute('''
@@ -67,8 +65,6 @@ def formulaire():
     return render_template("formulaire.html", data=data)
 
 
-
-
 @app.route("/supprimer/<int:item_id>", methods=['GET', 'POST'])
 def supprimer(item_id):
     item_id = int(item_id)
@@ -81,8 +77,9 @@ def supprimer(item_id):
     conn.commit()
     conn.close()
 
-    # flash(f'Le produit numéro {item_id} a été supprimé avec succès !', 'info')
+    # flash (f'Le produit numéro {item_id} a été supprimé avec succès !', 'info')
     return render_template("supprimera.html", data=data)
+
 
 @app.route("/suppress/<int:item_id>", methods=['GET', 'POST'])
 def suppress(item_id):
@@ -99,10 +96,6 @@ def suppress(item_id):
     # flash(f'Le magasin numéro {item_id} a été supprimé avec succès !', 'info')
     return render_template("suppress.html", data=data)
 
-@app.route("/magsup")
-def magsup():
-    return render_template("magasinsupprime.html")
-
 
 @app.route("/produit", methods=['GET', 'POST'])
 def produit():
@@ -110,7 +103,7 @@ def produit():
     # 1. Déclaration des variables et des objets
     # -------------------------------------------------------------
     # Variables
-    DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
+    DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
 
     # Objets
     conn = pyodbc.connect(DSN)
@@ -131,11 +124,11 @@ def produit():
     return render_template("produit.html", data=data)
 
 
-
 """Créer un nouveau produit."""
-@app.route("/formulaireproduit", methods=["GET","POST"])
+
+
+@app.route("/formulaireproduit", methods=["GET", "POST"])
 def formulaireproduit():
-    
     # Si la requête est une requête POST, insérer le nouveau produit dans la base de données
     if request.method == 'POST':
         # Récupérer les données du formulaire
@@ -143,10 +136,10 @@ def formulaireproduit():
         description = request.form["description"]
         stockactuel = request.form["stockactuel"]
         prixunitaire = request.form["prixunitaire"]
-        DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
+        DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
 
         # Connexion à la base de données
-        DSN = 'Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;'
+        DSN = 'Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;'
         conn = pyodbc.connect(DSN)
         cursor = conn.cursor()
 
@@ -155,7 +148,7 @@ def formulaireproduit():
             INSERT INTO Produit (Nom, Descriptions, StockActuel, PrixUnitaire)
             VALUES ( ?, ?, ?, ?)
          ''', (nom, description, stockactuel, prixunitaire))
-        
+
         # Validation des modifications et fermeture de la connexion à la base de données
         conn.commit()
         conn.close()
@@ -234,7 +227,6 @@ def delete(item_id):
     return redirect(url_for('produit'))
 
 
-
 @app.route('/MagEdit/<int:item_id>', methods=['GET', 'POST'])
 def MagEdit(item_id):
     item_id = int(item_id)
@@ -259,21 +251,9 @@ def MagEdit(item_id):
     return render_template('formulaire.html', data=data)
 
 
-@app.route('/MagDelete/<int:item_id>', methods=['GET', 'POST'])
-def MagDelete(item_id):
-    item_id = int(item_id)
-    conn = pyodbc.connect(DSN)
-    cursor = conn.cursor()
-    cursor.execute('DELETE FROM Magasin WHERE IdMagasin = ?', item_id)
-    conn.commit()
-    conn.close()
-    flash(f'Le magasin numéro {item_id} a été supprimé avec succès !', 'info')
-    return redirect(url_for('magasin'))
-
-
 @app.route("/vente")
 def vente():
-    DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
+    DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
     conn = pyodbc.connect(DSN)
     cursor = conn.cursor()
     cursor.execute("""
@@ -288,7 +268,7 @@ def vente():
 
 @app.route("/formulairevente", methods=["GET", "POST"])
 def formulairevente():
-    DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
+    DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
     conn = pyodbc.connect(DSN)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM Produit")
@@ -311,7 +291,7 @@ def formulairevente():
          ''', (quantite, prixtotal, nomproduit, nommagasin))
         conn.commit()
         conn.close()
-        flash("Votre magasin a été enregistré avec succès !", 'info')
+        flash("Votre vente a été enregistré avec succès !", 'info')
         return redirect(url_for('vente'))
     data = ''
     return render_template("formulairevente.html", data=data, mags=mags, prods=prods)
@@ -356,9 +336,31 @@ def ventedit(item_id):
          ''', (quantite, prixtotal, nomproduit, nommagasin, item_id))
         conn.commit()
         conn.close()
-        flash(f'Le magasin numéro {item_id} a été modifié avec succès !', 'info')
+        flash(f'La vente numéro {item_id} a été modifié avec succès !', 'info')
         return redirect(url_for('vente'))
-    return render_template('formulaireventedit.html', magsel=magsel, prodsel=prodsel, data=data, prods=prods, mags=mags, selected=True)
+    return render_template('formulaireventedit.html', magsel=magsel, prodsel=prodsel, data=data, prods=prods, mags=mags,
+                           selected=True)
+
+@app.route("/supprimervente/<int:item_id>", methods=['GET', 'POST'])
+def supprimervente(item_id):
+    item_id = int(item_id)
+
+    conn = pyodbc.connect(DSN)
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    SELECT IdVente, Produit.Nom, Magasin.Nom
+    FROM Vente 
+    INNER JOIN Produit ON Vente.CodeProduit=Produit.CodeProduit
+    INNER JOIN Magasin ON Vente.IdMagasin=Magasin.IdMagasin
+    WHERE IdVente = ?
+    ''', (item_id,))
+    data = cursor.fetchone()
+    conn.commit()
+    conn.close()
+
+    # flash (f'Le produit numéro {item_id} a été supprimé avec succès !', 'info')
+    return render_template("supprimeravente.html", data=data)
 
 
 @app.route('/VenteDelete/<int:item_id>', methods=['GET', 'POST'])
