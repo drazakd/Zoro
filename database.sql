@@ -26,6 +26,4 @@ IdMagasin INT,
 FOREIGN KEY (IdMagasin) REFERENCES Magasin(IdMagasin)
 <<<<<<< Updated upstream
 );
-=======
-);
->>>>>>> Stashed changes
+
