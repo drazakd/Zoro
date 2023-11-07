@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b238fba0-295a-4199-a129-576742073f63" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/supprimeravente.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Zoro.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Zoro.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database.sql" beforeDir="false" afterPath="$PROJECT_DIR$/database.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/vente.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/vente.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/formulaireproduit.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/formulaireproduit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/produit.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/produit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/suppress.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/suppress.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,15 +31,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "collab",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Muhamad Yesufu/Documents/GitHub/collab/Zoro/templates"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;collab&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Muhamad Yesufu/Documents/GitHub/collab/Zoro/templates&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Muhamad Yesufu\Documents\GitHub\collab\Zoro\templates" />

@@ -3,12 +3,12 @@ import pyodbc
 
 # Connexion à la base de données SQL Server
 
-DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
+DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
 conn = pyodbc.connect(DSN)
 cursor = conn.cursor()
 cursor.execute("select * from Produit")
 
-DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
+DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
 conn = pyodbc.connect(DSN)
 cursor = conn.cursor()
 cursor.execute("select * from Magasin")
@@ -29,7 +29,7 @@ def accueil():
 
 @app.route("/magasin", methods=['GET', 'POST'])
 def magasin():
-    DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
+    DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
     conn = pyodbc.connect(DSN)
     cursor = conn.cursor()
     cursor.execute("select * from Magasin")
@@ -50,7 +50,7 @@ def formulaire():
         adresse = request.form["adresse"]
         telephone = request.form["telephone"]
         email = request.form["email"]
-        DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
+        DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
         conn = pyodbc.connect(DSN)
         cursor = conn.cursor()
         cursor.execute('''
@@ -103,7 +103,7 @@ def produit():
     # 1. Déclaration des variables et des objets
     # -------------------------------------------------------------
     # Variables
-    DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
+    DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
 
     # Objets
     conn = pyodbc.connect(DSN)
@@ -134,9 +134,8 @@ def formulaireproduit():
         # Récupérer les données du formulaire
         nom = request.form["nom"]
         description = request.form["description"]
-        stockactuel = request.form["stockactuel"]
         prixunitaire = request.form["prixunitaire"]
-        DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
+        DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
 
         # Connexion à la base de données
         DSN = 'Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;'
@@ -145,9 +144,9 @@ def formulaireproduit():
 
         # Insertion du nouveau produit
         cursor.execute('''
-            INSERT INTO Produit (Nom, Descriptions, StockActuel, PrixUnitaire)
-            VALUES ( ?, ?, ?, ?)
-         ''', (nom, description, stockactuel, prixunitaire))
+            INSERT INTO Produit (Nom, Description, PrixUnitaire)
+            VALUES ( ?, ?, ?)
+         ''', (nom, description, prixunitaire))
 
         # Validation des modifications et fermeture de la connexion à la base de données
         conn.commit()
@@ -251,9 +250,21 @@ def MagEdit(item_id):
     return render_template('formulaire.html', data=data)
 
 
+@app.route('/MagDel/<int:item_id>', methods=['GET', 'POST'])
+def MagDel(item_id):
+    item_id = int(item_id)
+    conn = pyodbc.connect(DSN)
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM Magasin WHERE IdMagasin = ?', (item_id,))
+    conn.commit()
+    conn.close()
+    flash(f'Le magasin numéro {item_id} a été supprimé avec succès !', 'info')
+    return redirect(url_for('magasin'))
+
+
 @app.route("/vente")
 def vente():
-    DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
+    DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
     conn = pyodbc.connect(DSN)
     cursor = conn.cursor()
     cursor.execute("""
@@ -268,7 +279,7 @@ def vente():
 
 @app.route("/formulairevente", methods=["GET", "POST"])
 def formulairevente():
-    DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
+    DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
     conn = pyodbc.connect(DSN)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM Produit")
@@ -341,6 +352,7 @@ def ventedit(item_id):
     return render_template('formulaireventedit.html', magsel=magsel, prodsel=prodsel, data=data, prods=prods, mags=mags,
                            selected=True)
 
+
 @app.route("/supprimervente/<int:item_id>", methods=['GET', 'POST'])
 def supprimervente(item_id):
     item_id = int(item_id)
@@ -373,6 +385,21 @@ def VenteDelete(item_id):
     conn.close()
     flash(f'La vente numéro {item_id} a été supprimé avec succès !', 'info')
     return redirect(url_for('vente'))
+
+
+@app.route("/stock")
+def stock():
+    DSN = "Driver={SQL Server};Server=y_muhamad\\SQLEXPRESS;Database=ZORO;"
+    conn = pyodbc.connect(DSN)
+    cursor = conn.cursor()
+    cursor.execute("""
+    SELECT Stock.IdStock, Produit.Nom, Magasin.Nom, Stock.Quantite 
+    FROM Magasin, Produit, Stock
+    WHERE Magasin.IdMagasin=Stock.IdMagasin AND Produit.CodeProduit=Stock.CodeProduit
+    """)
+    data = cursor.fetchall()
+    conn.close()
+    return render_template("stock.html", data=data)
 
 
 if __name__ == '__main__':  # si notre nom = a main executer app
