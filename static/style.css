@@ -302,9 +302,20 @@ button{
     text-align: center;
 }
 
+.formulairereg{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 90%;
+    height: 90%;
+}
 
-/* .touchconfirm{
-    height: 20%;
+.containers{
     width: 30%;
-    border: 2px solid black;
-} */
+    height: 50%;
+    /* border: 2px solid black; */
+    border-radius: 50px;
+    background-color: rgb(6, 183, 253);
+    display: flex;
+    justify-content: center;
+}

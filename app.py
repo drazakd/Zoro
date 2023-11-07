@@ -1,20 +1,18 @@
-from flask import Flask, render_template, request, url_for, flash, redirect
+from flask import Flask, render_template, request, url_for, flash, redirect, Response
+from flask_login import LoginManager, login_user, UserMixin, logout_user, current_user
+
 import pyodbc
+import json
 
 # Connexion à la base de données SQL Server
 
 DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
 conn = pyodbc.connect(DSN)
 cursor = conn.cursor()
-cursor.execute("select * from Produit")
-
-DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
-conn = pyodbc.connect(DSN)
-cursor = conn.cursor()
-cursor.execute("select * from Magasin")
 
 app = Flask(__name__)  # montre le nom (app) de notre application a flask
 app.config['SECRET_KEY'] = 'clés_flash'
+
 
 
 @app.route("/")  # page principale pour specifier le chemin
@@ -27,6 +25,42 @@ def accueil():
     return render_template("base.html")  # lien de la deuxième page
 
 
+@app.route("/deconnexion")
+def deconnexion():
+    return render_template("index.html")
+
+@app.route("/inscription", methods=["POST", "GET"])
+def inscription():
+    username = request.form.get("identifiant")
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    # Vérifiez les champs du formulaire pour les erreurs
+
+    if not username:
+        return render_template("inscription.html", error="Le nom d'utilisateur est requis.")
+    if not email:
+        return render_template("inscription.html", error="L'adresse e-mail est requise.")
+    if not password:
+        return render_template("inscription.html", error="Le mot de passe est requis.")
+
+    # Insérez les informations d'identification de l'utilisateur dans la base de données
+
+    conn = pyodbc.connect(DSN)
+
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO Comptes (username, Email, password) VALUES (?, ?, ?)",
+        (username, email, password),
+    )
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    # Redirigez l'utilisateur vers la page de connexion
+
+    return redirect("/")
+
 @app.route("/magasin", methods=['GET', 'POST'])
 def magasin():
     DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
@@ -37,10 +71,6 @@ def magasin():
     conn.close()
     return render_template("magasin.html", data=data)
 
-
-@app.route("/deconnexion")  # quatrième route pour la deuxième page
-def deconnexion():
-    return render_template("index.html")  # lien de la deuxième page
 
 
 @app.route("/formulaire", methods=["GET", "POST"])
@@ -134,7 +164,6 @@ def formulaireproduit():
         # Récupérer les données du formulaire
         nom = request.form["nom"]
         description = request.form["description"]
-        stockactuel = request.form["stockactuel"]
         prixunitaire = request.form["prixunitaire"]
         DSN = "Driver={SQL Server};Server=DESKTOP-6RB7ER5\\SQLEXPRESS;Database=product;"
 
@@ -145,9 +174,9 @@ def formulaireproduit():
 
         # Insertion du nouveau produit
         cursor.execute('''
-            INSERT INTO Produit (Nom, Descriptions, StockActuel, PrixUnitaire)
-            VALUES ( ?, ?, ?, ?)
-         ''', (nom, description, stockactuel, prixunitaire))
+            INSERT INTO Produit (Nom, Descriptions, PrixUnitaire)
+            VALUES ( ?, ?, ?)
+         ''', (nom, description, prixunitaire))
 
         # Validation des modifications et fermeture de la connexion à la base de données
         conn.commit()
@@ -179,15 +208,14 @@ def edit(item_id):
         # Récupération des données du formulaire
         nom = request.form['nom']
         description = request.form['description']
-        stockactuel = request.form['stockactuel']
         prixunitaire = request.form['prixunitaire']
 
         # Mise à jour des données du produit dans la base de données
         cursor.execute('''
             UPDATE produit
-            SET Nom = ?, Descriptions = ?, StockActuel = ?, PrixUnitaire = ?
+            SET Nom = ?, Descriptions = ?, PrixUnitaire = ?
             WHERE CodeProduit = ?
-        ''', (nom, description, stockactuel, prixunitaire, item_id))
+        ''', (nom, description, prixunitaire, item_id))
 
         # Validation des modifications dans la base de données
         conn.commit()
@@ -226,6 +254,26 @@ def delete(item_id):
     flash(f'Le produit numéro {item_id} a été supprimé avec succès !', 'info')
     return redirect(url_for('produit'))
 
+@app.route('/deleter/<int:item_id>', methods=['GET', 'POST'])
+def deleter(item_id):
+    item_id = int(item_id)
+
+    # Connexion à la base de données
+    conn = pyodbc.connect(DSN)
+
+    # Création d'un objet curseur
+    cursor = conn.cursor()
+
+    # Récupération des données du produit depuis la base de données
+    cursor.execute('DELETE FROM Magasin WHERE IdMagasin = ?', (item_id,))
+
+    # Validation des modifications dans la base de données
+    conn.commit()
+    # Fermeture de la connexion à la base de données
+    conn.close()
+
+    flash(f'Le magasin numéro {item_id} a été supprimé avec succès !', 'info')
+    return redirect(url_for('magasin'))
 
 @app.route('/MagEdit/<int:item_id>', methods=['GET', 'POST'])
 def MagEdit(item_id):

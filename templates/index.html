@@ -13,23 +13,23 @@
     <section class="main">
         <section class="container">
             <div class="formulaire">
-                <form action="/connexion">
+                <form action="{{ url_for('connexion') }}">
                     <div>
                         <H2>Connectez-vous</H2>
                     </div>
                     <div>
-                        <input type="text" id="identifiant" name="identifiant" placeholder="identifiant" >
+                        <input type="text" id="identifiant" name="identifiant" placeholder="identifiant" required>
                     </div>
                     <div>
                         <label for="motdepasse"></label>
-                        <input type="text" id="motdepasse" name="motdepasse" placeholder="Mot de passe">
+                        <input type="text" id="motdepasse" name="motdepasse" placeholder="Mot de passe" required>
                     </div>
                     <div>
                         <!-- bouton envoyer -->
                         <button type="submit">connexion</button>
                     </div>
                     <div>
-                        <p><a href="">Si pas de compte inscrivez-vous</a></p>
+                        <p><a href="{{ url_for('inscription') }}">Si pas de compte inscrivez-vous</a></p>
                     </div>
 
                 </form>

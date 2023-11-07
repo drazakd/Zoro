@@ -30,7 +30,6 @@
                             <td class="id un">CodeProduit</td>
                             <td class="un">Nom</td>
                             <td class="un">Description</td>
-                            <td class="un">StockActuel</td>
                             <td class="un">PrixUnitaire</td>
                             <td class="un">Action</td>
                           </tr>
@@ -42,7 +41,6 @@
                             <td> {{ row[1] }} </td>
                             <td> {{ row[2] }} </td>
                             <td> {{ row[3] }} </td>
-                            <td> {{ row[4] }} </td>
                             <td>
                               <button class="modifier"><a href="{{ url_for('edit', item_id=row[0]) }}">Modifier</a></button>
                               <button class="Supprimer"><a href="{{ url_for('supprimer', item_id=row[0]) }}">Supprimer</a></button>

@@ -24,3 +24,17 @@ FOREIGN KEY (CodeProduit) REFERENCES Produit(CodeProduit),
 IdMagasin INT,
 FOREIGN KEY (IdMagasin) REFERENCES Magasin(IdMagasin)
 );
+
+
+CREATE TABLE Comptes(
+Id INT IDENTITY(1,1) PRIMARY KEY,
+username VARCHAR(50),
+password VARCHAR(255),
+Email VARCHAR(75)
+);
+
+select * from Comptes
+
+SELECT * FROM Comptes WHERE username = drazakd AND password = admin
+
+SELECT * FROM Comptes WHERE username = admin AND password = admin
