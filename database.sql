@@ -24,3 +24,12 @@ FOREIGN KEY (CodeProduit) REFERENCES Produit(CodeProduit),
 IdMagasin INT,
 FOREIGN KEY (IdMagasin) REFERENCES Magasin(IdMagasin)
 );
+
+CREATE TABLE Stock(
+IdStock INT PRIMARY KEY IDENTITY(1,1),
+Quantite INT NOT NULL,
+CodeProduit INT,
+FOREIGN KEY (CodeProduit) REFERENCES Produit(CodeProduit),
+IdMagasin INT,
+FOREIGN KEY (IdMagasin) REFERENCES Magasin(IdMagasin)
+);
